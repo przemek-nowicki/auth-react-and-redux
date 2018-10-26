@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { Fragment, PureComponent } from 'react';
 
-class Login extends React.Component {
+export default class Login extends React.Component {
+    clickMe = () => {
+       this.props.authStart();
+    };
+
     render() {
-        return (<div>Login</div>);
+        return (
+            <Fragment>
+                <input type="text"/>
+                <input type="password"/>
+                <button onClick={this.clickMe}>Login</button>
+            </Fragment>
+        );
     }
 }
