@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
-import {authStart} from '../store/actions';
+import * as actions from '../store/actions';
 import Login from '../componnents/Login/Login';
 
 const mapStateToProps = state => {
     return {
-        loading: state.loading,
+        token: state.token,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        authStart: () => dispatch( authStart() )
+        login: (username, password) => dispatch( actions.login(username, password) )
     };
 };
 
