@@ -7,5 +7,6 @@ export default function storeConfig() {
     return createStore(
         combineReducers({auth,common}),
         applyMiddleware(thunk)
+
     );
 }

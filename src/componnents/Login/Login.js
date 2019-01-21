@@ -1,8 +1,9 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { Fragment } from 'react';
 
 export default class Login extends React.Component {
+
     clickMe = () => {
-       this.props.login('admin', 'admin');
+       this.props.login('admin', 'password');
     };
 
     render() {
