@@ -16,7 +16,7 @@ export const loginSuccess = (token) => {
 
 export const login = (username, password) => {
     return dispatch => {
-        dispatch(loginSuccess('new token!'))
+        dispatch(loginSuccess('new token!'));
         //dispatch(request());
     };
 };
