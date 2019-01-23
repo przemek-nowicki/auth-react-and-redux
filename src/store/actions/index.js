@@ -1,3 +1,0 @@
-export {
-    login
-} from './auth';

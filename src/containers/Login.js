@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import { login } from '../store/actions';
+import { login } from '../store/actions/auth.action';
 
-import Login from '../componnents/Login/Login';
+import Login from '../componnents/Login';
 
 const mapStateToProps = state => {
     return {
-        loading: state.common.loading,
+        loggingIn: state.auth.loggingIn,
         user: state.auth.user
     };
 };

@@ -1,4 +1,4 @@
-import * as actionTypes from '../store/actionTypes';
+import * as actionTypes from '../../constants/action.constant';
 
 const initialState = { loading: false, action: '' };
 

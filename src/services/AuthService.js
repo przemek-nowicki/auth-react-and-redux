@@ -1,4 +1,4 @@
-export default class AccountServices {
+export default class AuthServices {
     constructor(api) {
         this.api = api;
     }
