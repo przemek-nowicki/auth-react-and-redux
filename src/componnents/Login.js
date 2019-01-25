@@ -4,7 +4,7 @@ export default class Login extends Component {
 
     submit (ev) {
        ev.preventDefault();
-       this.props.login('admin', 'password');
+       this.props.login('admin@miwu.pl', 'admin123');
     };
 
     render() {

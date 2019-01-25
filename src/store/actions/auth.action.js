@@ -6,15 +6,18 @@ import Api from '../../services/Api';
 
 const authService = new AuthService(new Api());
 
-export const login = (username, password) => {
+export const login = (email, password) => {
     return async (dispatch) => { 
         try {
-            dispatch(request(username));
-            const res = await authService.login(username, password);
-            dispatch(success('admin'));
+            dispatch(request(email));
+            const response = await authService.login(email, password);
+            if(response && response.token) {
+                localStorage.setItem('user', JSON.stringify(response));
+            }
+            dispatch(success(email));
         } catch(e) {
             console.error(`Error code: ${e.code}\nError details: ${e.body}`);
-            dispatch(failure(`Couldn't login user: ${username}`));
+            dispatch(failure(`Couldn't login user: ${email}`));
         }
         
     }

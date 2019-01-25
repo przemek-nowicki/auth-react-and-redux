@@ -1,11 +1,12 @@
 import Api from './Api';
 
-export default class AuthApi extends Api {
+export default class AuthGuardApi extends Api {
     createHeaders() {
         const headers = super.createHeaders();
         const user = JSON.parse(localStorage.getItem('user'));
+
         if (user && user.token) {
-            headers.append( 'Authorization', 'Bearer ' + user.token );
+            headers.append( 'x-access-token', user.token );
         }
         return headers;
     }

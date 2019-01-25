@@ -3,7 +3,11 @@ export default class AuthServices {
         this.api = api;
     }
 
-    async login(username, password) {
-         return this.api.postJSON('/api/auth', { username, password });
+    async login(email, password) {
+         return this.api.postJSON('/api/auth/login', { email, password });
     }
+    
+    async me() {
+        return this.api.getJSON('/api/auth/me');
+   }
 }
