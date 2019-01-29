@@ -6,7 +6,7 @@ router.use(bodyParser.json());
 const User = require('../user/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const config = require('../config');
+const config = require('../config/application');
 const VerifyToken = require('./VerifyToken');
 
 router.post('/login', function(req, res) {
