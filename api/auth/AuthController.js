@@ -6,8 +6,10 @@ router.use(bodyParser.json());
 const User = require('../user/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 const config = require('../config/application');
 const VerifyToken = require('./VerifyToken');
+const AuthService = require('./AuthService');
 
 router.post('/login', function(req, res) {
     User.findOne({ email: req.body.email }, function (err, user) {
@@ -46,5 +48,24 @@ router.get('/me', VerifyToken, function(req, res) {
         res.status(200).send(user);
     });
  });
+
+/*** Google OAuth routes ***/
+
+router.get('/google', passport.authenticate('google', {
+    session: false,
+    scope: ['profile', 'email']
+}));
+
+router.get(config.google.callbackURL.replace('/api/auth',''), 
+           passport.authenticate('google',{session: false}), 
+           function(req, res) {
+    const token = AuthService.signToken(req.user._id);
+    if(token) {
+        console.log(`[GoogleOauth]: Token issued for the user: ${req.user._id}`);
+    } else {
+        console.error(`[GoogleOauth]: Token has not been issued for the user: ${req.user._id}`);
+    }
+    res.status(200).send({ token: token });
+});
 
 module.exports = router;
