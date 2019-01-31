@@ -10,5 +10,8 @@ module.exports = {
     },
     mongodb: {
         URI: 'mongodb://<dbuser>:<dbpassword>@localhost:27017/auth'
+    },
+    client: {
+        url: 'http://localhost:3000'
     }
 };

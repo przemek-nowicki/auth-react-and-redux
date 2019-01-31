@@ -1,4 +1,5 @@
 const express = require('express');
+const mustacheExpress = require('mustache-express');
 const cors = require('cors');
 const passport = require('passport');
 
@@ -10,6 +11,7 @@ const app = express();
 const UserController = require('./user/UserController');
 const AuthController = require('./auth/AuthController');
 
+app.engine('html', mustacheExpress());
 app.use(passport.initialize());
 app.use(cors());
 app.use('/api/users', UserController);

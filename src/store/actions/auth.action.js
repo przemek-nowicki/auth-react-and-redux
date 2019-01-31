@@ -5,6 +5,9 @@ import AuthService from '../../services/AuthService';
 import Api from '../../services/Api';
 
 const authService = new AuthService(new Api());
+const request = (user) => { return { type: LOGIN_REQUEST, user } };
+const success = (user) => { return { type: LOGIN_SUCCESS, user } };
+const failure = (error) => { return { type: LOGIN_FAILURE, error } };
 
 export const login = (email, password) => {
     return async (dispatch) => { 
@@ -18,10 +21,23 @@ export const login = (email, password) => {
         } catch(e) {
             console.error(`Error code: ${e.code}\nError details: ${e.body}`);
             dispatch(failure(`Couldn't login user: ${email}`));
-        }
-        
+        }   
     }
-    function request(user) { return { type: LOGIN_REQUEST, user } }
-    function success(user) { return { type: LOGIN_SUCCESS, user } }
-    function failure(error) { return { type: LOGIN_FAILURE, error } }
+}
+
+export const loginOAuthGoogle = () => {
+    return (dispatch) => {
+        function receiveMessage(event) {
+            if (event.origin !== Api.url) {
+                dispatch(failure(`Couldn't login via OAuth Google!`));
+                return;
+            }
+            if(event.data) {
+                localStorage.setItem('user', JSON.stringify({token: event.data}));
+                dispatch(success('Google User'));
+            }
+        }
+        window.open(`${Api.url}/api/auth/google`, 'Google OAuth', "height=615,width=605"); 
+        window.addEventListener("message", receiveMessage, false);
+    }
 }

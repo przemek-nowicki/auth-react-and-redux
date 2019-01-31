@@ -2,8 +2,8 @@
 
 # dependencies
 /node_modules
-/api/node_modules
-/api/config/application.js
+/backend/node_modules
+/backend/config/application.js
 
 # testing
 /coverage

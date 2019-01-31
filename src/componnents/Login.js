@@ -5,7 +5,7 @@ export default class Login extends Component {
         username: '',
         password: ''
     }
-
+    
     submit = (ev) => {
        ev.preventDefault();
        const { username, password } = this.state;
@@ -17,6 +17,10 @@ export default class Login extends Component {
         this.setState({ [name]: value });
     }
 
+    siggningInWithGoogle = () => {
+        this.props.loginOAuthGoogle();
+    };
+
     render() {
         const { loggingIn } = this.props;
         const { username, password } = this.state;
@@ -27,6 +31,7 @@ export default class Login extends Component {
                     <input type="password" name="password" value={password} onChange={this.inputChange}/>
                     <button disabled={loggingIn}>Login</button>
                 </form>
+                <button onClick={this.siggningInWithGoogle}>Signing in with Google</button>
             </Fragment>
         );
     }

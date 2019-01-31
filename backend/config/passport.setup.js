@@ -9,7 +9,7 @@ passport.use(new GoogleStrategy({
     callbackURL: config.google.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(`User logged in with id=${profile.id}`);
+    console.log(`User logged in with googleId=${profile.id}`);
     const query = { googleId : profile.id };
     const update = {
       email: profile.emails ? profile.emails[0].value : undefined,
