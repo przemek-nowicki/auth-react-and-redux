@@ -7,7 +7,7 @@
         Authenticated successfully!
         <script type="text/javascript">
             var opener = window.opener; 
-            opener.postMessage('{{token}}', '{{{targetOrigin}}}');
+            opener.postMessage('{{{user}}}', '{{{targetOrigin}}}');
             window.close();
         </script>
     </body>

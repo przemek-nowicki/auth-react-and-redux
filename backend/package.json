@@ -18,6 +18,8 @@
     "mongoose": "^5.0.1",
     "mustache-express": "^1.2.8",
     "passport": "^0.4.0",
-    "passport-google-oauth20": "^1.0.0"
+    "passport-google-oauth20": "^1.0.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
   }
 }

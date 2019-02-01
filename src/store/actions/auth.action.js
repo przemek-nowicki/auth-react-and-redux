@@ -33,7 +33,7 @@ export const loginOAuthGoogle = () => {
                 return;
             }
             if(event.data) {
-                localStorage.setItem('user', JSON.stringify({token: event.data}));
+                localStorage.setItem('user', event.data);
                 dispatch(success('Google User'));
             }
         }

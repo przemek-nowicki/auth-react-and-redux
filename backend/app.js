@@ -4,7 +4,9 @@ const cors = require('cors');
 const passport = require('passport');
 
 require('./db');
-require('./config/passport.setup');
+require('./config/passport/google.setup');
+require('./config/passport/jwt.setup');
+require('./config/passport/local.setup');
 
 const app = express();
 

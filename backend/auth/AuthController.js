@@ -4,23 +4,28 @@ const bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 const User = require('../user/User');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const config = require('../config/application');
-const VerifyToken = require('./VerifyToken');
 const AuthService = require('./AuthService');
 const path = require('path');
 
-router.post('/login', function(req, res) {
-    User.findOne({ email: req.body.email }, function (err, user) {
-        if (err) return res.status(500).send('Error on the server.');
-        if (!user) return res.status(404).send('No user found.');
-        const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-        if (!passwordIsValid) return res.status(401).send({ token: null });
-        const accessToken = AuthService.issueToken(user._id);
-        res.status(200).send({ token: accessToken });
-    });
+router.post('/login', (req, res) => {
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        if (err || !user) {
+            return res.status(400).json({
+                message: info ? info.message : 'Login failed',
+                user   : user
+            });
+        }
+        req.logIn(user, {session: false}, (err) => {
+            if (err) {
+                res.send(err);
+            }
+            const token = AuthService.issueToken(user._id);
+            return res.status(200).send({user, token});
+        });
+    })(req, res);
 });
 
 router.post('/register', function(req, res) {
@@ -37,12 +42,8 @@ router.post('/register', function(req, res) {
     }); 
 });
 
-router.get('/me', VerifyToken, function(req, res) {
-    User.findById(req.userId, { password: 0 }, function (err, user) {
-        if (err) return res.status(500).send("There was a problem finding the user.");
-        if (!user) return res.status(404).send("No user found.");
-        res.status(200).send(user);
-    });
+router.get('/me', AuthService.authRequired, function(req, res) {
+    return res.status(200).send(req.user);
  });
 
 //########### Google OAuth ###########//
@@ -61,7 +62,7 @@ router.get(config.google.callbackURL.replace('/api/auth',''),
         console.error(`[GoogleOAuth]: Token has not been issued for the user: ${req.user._id}`);
     }
     res.render(path.join(__dirname + '/authenticated.html'), {
-        token: accessToken,
+        user: JSON.stringify({user: req.user, token: accessToken}),
         targetOrigin: config.client.url
     });
 });

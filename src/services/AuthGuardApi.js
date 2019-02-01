@@ -6,7 +6,7 @@ export default class AuthGuardApi extends Api {
         const user = JSON.parse(localStorage.getItem('user'));
 
         if (user && user.token) {
-            headers.append( 'x-access-token', user.token );
+            headers.append( 'Authorization', 'bearer ' + user.token );
         }
         return headers;
     }

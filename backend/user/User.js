@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');  
+const bcrypt = require('bcryptjs');
+
 const UserSchema = new mongoose.Schema({  
   name: String,
   email: String,
@@ -9,6 +11,18 @@ const UserSchema = new mongoose.Schema({
   },
   googleId: String
 });
+
+UserSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+UserSchema.methods.toAuthJSON = function() {
+  return {
+    _id: this._id,
+    email: this.email,
+    name: this.name
+  };
+}
 
 mongoose.model('User', UserSchema);
 
