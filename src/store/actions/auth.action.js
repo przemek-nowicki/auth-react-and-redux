@@ -1,6 +1,7 @@
 import {LOGIN_SUCCESS, 
         LOGIN_FAILURE, 
-        LOGIN_REQUEST } from '../../constants/action.constant';
+        LOGIN_REQUEST,
+        LOGOUT } from '../../constants/action.constant';
 import AuthService from '../../services/AuthService';
 import Api from '../../services/Api';
 
@@ -23,6 +24,11 @@ export const login = (email, password) => {
             dispatch(failure(`Couldn't login user: ${email}`));
         }   
     }
+}
+
+export const logout = () => {
+    AuthService.logout();
+    return { type: LOGOUT };
 }
 
 export const loginOAuthGoogle = () => {

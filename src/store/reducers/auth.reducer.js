@@ -1,4 +1,7 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../../constants/action.constant';
+import { LOGIN_REQUEST, 
+         LOGIN_SUCCESS, 
+         LOGIN_FAILURE, 
+         LOGOUT } from '../../constants/action.constant';
 
 const initialState = { loggingIn: false, user: null };
 
@@ -16,8 +19,9 @@ const reducer = ( state = initialState, action ) => {
         case LOGIN_FAILURE: 
             return {
                 loggingIn: false
-            }
-            
+            };
+        case LOGOUT:
+            return {};     
         default:
             return state;
     }

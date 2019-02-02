@@ -4,7 +4,11 @@ export default class AuthServices {
     }
 
     async login(email, password) {
-         return this.api.postJSON('/api/auth/login', { email, password });
+        return this.api.postJSON('/api/auth/login', { email, password });
+    }
+
+    logout() {
+        localStorage.setItem('user', '');
     }
     
     async me() {
