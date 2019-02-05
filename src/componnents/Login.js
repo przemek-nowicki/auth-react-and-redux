@@ -1,15 +1,57 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
 
-export default class Login extends Component {
+const styles = theme => ({
+    main: {
+        width: 'auto',
+        display: 'block', // Fix IE 11 issue.
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+            width: 400,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+    paper: {
+        marginTop: theme.spacing.unit * 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+    },
+    avatar: {
+        margin: theme.spacing.unit,
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing.unit,
+    },
+    submit: {
+        marginTop: theme.spacing.unit * 3,
+    }
+});
+
+class Login extends Component {
     state = {
-        username: '',
+        login: '',
         password: ''
     }
     
     submit = (ev) => {
        ev.preventDefault();
-       const { username, password } = this.state;
-       this.props.login(username, password);
+       const { login, password } = this.state;
+       this.props.login(login, password);
     };
 
     inputChange = (ev) => {
@@ -22,17 +64,41 @@ export default class Login extends Component {
     };
 
     render() {
-        const { loggingIn } = this.props;
-        const { username, password } = this.state;
+        const { loggingIn, classes } = this.props;
+        const { login, password } = this.state;
         return (
-            <Fragment>
-                <form name="form" onSubmit={ this.submit } noValidate>
-                    <input type="text" name="username" value={username} onChange={this.inputChange}/>
-                    <input type="password" name="password" value={password} onChange={this.inputChange}/>
-                    <button disabled={loggingIn}>Login</button>
-                </form>
-                <button onClick={this.siggningInWithGoogle}>Signing in with Google</button>
-            </Fragment>
+            <main className={classes.main}>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar}> 
+                        <LockOutlinedIcon />   
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <form name="form" onSubmit={ this.submit } noValidate className={classes.form}>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="login">Email Address</InputLabel>
+                            <Input id="email" name="login" value={login} autoComplete="login" autoFocus onChange={this.inputChange}/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="password">Password</InputLabel>
+                            <Input name="password" value={password} onChange={this.inputChange}type="password" id="password" autoComplete="current-password" />
+                        </FormControl>
+                        <FormControl margin="normal" fullWidth>
+                            <Button type="submit" fullWidth variant="contained" color="primary" disabled={loggingIn}>Login</Button>
+                        </FormControl>
+                    </form>
+                    <Button type="submit" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithGoogle}>Signing in with Google</Button>
+                </Paper>
+            </main>
         );
     }
 }
+
+Login.propTypes = {
+    login: PropTypes.func.isRequired,
+    classes: PropTypes.object.isRequired,
+    loggingIn: PropTypes.bool
+  };
+
+export default withStyles(styles)(Login);

@@ -27,7 +27,7 @@ export const login = (email, password) => {
 }
 
 export const logout = () => {
-    AuthService.logout();
+    authService.logout();
     return { type: LOGOUT };
 }
 

@@ -5,7 +5,7 @@ module.exports = {
         callbackURL: 'XX'
     },
     jwt: {
-        expiresIn: 86400, // expires in 24 hours
+        expiresIn: '1d',
         secret: 'XX'
     },
     mongodb: {
