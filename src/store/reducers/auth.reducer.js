@@ -3,7 +3,7 @@ import { LOGIN_REQUEST,
          LOGIN_FAILURE, 
          LOGOUT } from '../../constants/action.constant';
 
-const initialState = { loggingIn: false, user: null };
+const initialState = { loggingIn: false, user: null, error: null };
 
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
@@ -14,11 +14,14 @@ const reducer = ( state = initialState, action ) => {
         case LOGIN_SUCCESS:
             return {
                 loggingIn: false,
-                user: action.user
+                user: action.user,
+                error: null
             };
         case LOGIN_FAILURE: 
             return {
-                loggingIn: false
+                loggingIn: false,
+                user: null,
+                error: action.error
             };
         case LOGOUT:
             return {};     

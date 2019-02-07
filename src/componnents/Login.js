@@ -64,8 +64,10 @@ class Login extends Component {
     };
 
     render() {
-        const { loggingIn, classes } = this.props;
+        let errorElement;
+        const { loggingIn, classes, error } = this.props;
         const { login, password } = this.state;
+        if(error) errorElement = <small>{error}</small>;
         return (
             <main className={classes.main}>
                 <Paper className={classes.paper}>
@@ -75,7 +77,8 @@ class Login extends Component {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form name="form" onSubmit={ this.submit } noValidate className={classes.form}>
+                    {errorElement}
+                    <form name="form" onSubmit={ this.submit } className={classes.form}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="login">Email Address</InputLabel>
                             <Input id="email" name="login" value={login} autoComplete="login" autoFocus onChange={this.inputChange}/>
