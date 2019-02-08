@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Header from '../componnents/Header';
+import Home from '../componnents/Home';
 import * as auth from '../store/actions/auth.action';
 
 const mapStateToProps = state => {
@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect( mapStateToProps, mapDispatchToProps )( Header );
+export default connect( mapStateToProps, mapDispatchToProps )( Home );

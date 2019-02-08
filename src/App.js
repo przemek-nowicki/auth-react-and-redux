@@ -1,22 +1,32 @@
 import React, { Component } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import Login from './containers/Login';
 import './App.css';
-import Header from './containers/Header';
-import Users from './componnents/Users';
+import Login from './containers/Login';
+import Home from './containers/Home';
+import ProtectedRoute from './componnents/ProtectedRoute';
 import Api from './services/Api';
 
 Api.url = 'http://localhost:4000';
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
-        <CssBaseline />
-        <Users></Users>
-        <Header></Header>
-        <Login></Login>
+       <CssBaseline />
+       <Switch>
+          <Route 
+            path='/login'
+            component={ Login }
+          />
+          <ProtectedRoute
+            path='/home'
+            component={ Home }
+          />
+          <Redirect to='/login'/>
+        </Switch>
       </div>
     );
   }
