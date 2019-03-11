@@ -1,15 +1,15 @@
 module.exports = {
     google: {
-        clientID: 'XX',
-        clientSecret: 'XX',
-        callbackURL: 'XX'
+        clientID: '358663697169-cebmqlglr75tttqmsl4m71mjr9442cek.apps.googleusercontent.com',
+        clientSecret: 'NlZ8emzrRpPP4IJM4Pwkkre5',
+        callbackURL: "/api/auth/google/redirect"
     },
     jwt: {
         expiresIn: '1d',
-        secret: 'XX'
+        secret: 'secret'
     },
     mongodb: {
-        URI: 'mongodb://<dbuser>:<dbpassword>@localhost:27017/auth'
+        URI: 'mongodb://test:test123@ds111425.mlab.com:11425/auth-react-redux'
     },
     client: {
         url: 'http://localhost:3000'
