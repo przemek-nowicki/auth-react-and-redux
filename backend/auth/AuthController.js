@@ -67,4 +67,12 @@ router.get(config.google.callbackURL.replace('/api/auth',''),
     });
 });
 
+//########### Facebook OAuth ###########//
+router.get(config.facebook.callbackURL,
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
 module.exports = router;

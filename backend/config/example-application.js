@@ -4,6 +4,11 @@ module.exports = {
         clientSecret: 'NlZ8emzrRpPP4IJM4Pwkkre5',
         callbackURL: "/api/auth/google/redirect"
     },
+    facebook: {
+        clientID: 'xx',
+        clientSecret: 'xx',
+        callbackURL: "/api/auth/facebook/redirect"
+    },
     jwt: {
         expiresIn: '1d',
         secret: 'secret'
