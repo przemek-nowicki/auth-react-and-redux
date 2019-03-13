@@ -71,8 +71,16 @@ router.get(config.google.callbackURL.replace('/api/auth',''),
 router.get(config.facebook.callbackURL,
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
+    const accessToken = AuthService.issueToken(req.user._id);
+    if(accessToken) {
+        console.log(`[GoogleOAuth]: Token issued for the user: ${req.user._id}`);
+    } else {
+        console.error(`[GoogleOAuth]: Token has not been issued for the user: ${req.user._id}`);
+    }
+    res.render(path.join(__dirname + '/authenticated.html'), {
+        user: JSON.stringify({user: req.user, token: accessToken}),
+        targetOrigin: config.client.url
+    });
   });
 
 module.exports = router;
