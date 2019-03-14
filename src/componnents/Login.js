@@ -63,6 +63,10 @@ class Login extends Component {
         this.props.loginOAuthGoogle();
     };
 
+    siggningInWithFacebook = () => {
+        console.log('Signing in via Facebook');
+    };
+
     render() {
         let errorElement;
         const { loggingIn, classes, error } = this.props;
@@ -92,6 +96,7 @@ class Login extends Component {
                         </FormControl>
                     </form>
                     <Button type="submit" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithGoogle}>Signing in with Google</Button>
+                    <Button type="submit" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithFacebook}>Signing in with Facebook</Button>
                 </Paper>
             </main>
         );

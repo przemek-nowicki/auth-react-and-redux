@@ -68,7 +68,7 @@ router.get(config.google.callbackURL.replace('/api/auth',''),
 });
 
 //########### Facebook OAuth ###########//
-router.get(config.facebook.callbackURL,
+router.get(config.facebook.callbackURL.replace('/api/auth', ''),
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     const accessToken = AuthService.issueToken(req.user._id);
