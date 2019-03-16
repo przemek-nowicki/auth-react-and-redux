@@ -9,7 +9,8 @@ const UserSchema = new mongoose.Schema({
   lastLogin: {
     timestamp : { type : Date, default : undefined }
   },
-  googleId: String
+  googleId: String,
+  facebookId: String
 });
 
 UserSchema.methods.validPassword = function(password) {
