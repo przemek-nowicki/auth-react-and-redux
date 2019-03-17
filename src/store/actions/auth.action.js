@@ -52,3 +52,22 @@ export const loginOAuthGoogle = () => {
         window.addEventListener("message", receiveMessage, false);
     }
 }
+
+export const loginOAuthFacebook = () => {
+    return (dispatch) => {
+        function receiveMessage(event) {
+            if (event.origin !== Api.url) {
+                dispatch(failure(`Couldn't login via OAuth Facebook!`));
+                return;
+            }
+            if(event.data) {
+                localStorage.setItem('user', event.data);
+                const data = JSON.parse(event.data);
+                dispatch(success(data.user.email));
+                history.push('/home');
+            }
+        }
+        window.open(`${Api.url}/api/auth/facebook`, 'Facebook OAuth', "height=615,width=605"); 
+        window.addEventListener("message", receiveMessage, false);
+    }
+}

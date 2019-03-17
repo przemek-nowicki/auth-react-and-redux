@@ -64,7 +64,7 @@ class Login extends Component {
     };
 
     siggningInWithFacebook = () => {
-        console.log('Signing in via Facebook');
+        this.props.loginOAuthFacebook();
     };
 
     render() {
@@ -92,11 +92,15 @@ class Login extends Component {
                             <Input name="password" value={password} onChange={this.inputChange}type="password" id="password" autoComplete="current-password" />
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
-                            <Button type="submit" fullWidth variant="contained" color="primary" disabled={loggingIn}>Login</Button>
+                            <Button type="submit" fullWidth variant="outlined" color="primary" disabled={loggingIn}>Login</Button>
+                        </FormControl>
+                        <FormControl fullWidth>
+                            <Button type="button" fullWidth variant="contained" color="primary" onClick={this.siggningInWithFacebook}>Signing in with Facebook</Button>
+                        </FormControl>
+                        <FormControl margin="dense" fullWidth>
+                            <Button type="button" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithGoogle}>Signing in with Google</Button>
                         </FormControl>
                     </form>
-                    <Button type="submit" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithGoogle}>Signing in with Google</Button>
-                    <Button type="submit" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithFacebook}>Signing in with Facebook</Button>
                 </Paper>
             </main>
         );

@@ -14,7 +14,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         login: (email, password) => dispatch(auth.login(email, password)),
-        loginOAuthGoogle: () => dispatch(auth.loginOAuthGoogle())
+        loginOAuthGoogle: () => dispatch(auth.loginOAuthGoogle()),
+        loginOAuthFacebook: () => dispatch(auth.loginOAuthFacebook())
     };
 };
 
