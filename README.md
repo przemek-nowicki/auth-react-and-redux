@@ -22,3 +22,9 @@ In separate terminal run backend service:<br />
 `cd backend`<br />
 `npm start`
 
+### Docker
+If you have docker cpmpose installed you can use a one-liner command instead of jumping into different directories:<br />
+`docker-compose up --build`
+<br /><br />
+Open http://localhost:3000 in your browser
+
