@@ -26,5 +26,7 @@ In separate terminal run backend service:<br />
 If you have docker cpmpose installed you can use a one-liner command instead of jumping into different directories:<br />
 `docker-compose up --build`
 <br /><br />
-Open http://localhost:3000 in your browser
+Open http://localhost:3000 in your browser, you should see the below screen:<br />
+
+![picture alt](http://assets.miwu.pl/oauth-sign-in-form.png "Form")
 
