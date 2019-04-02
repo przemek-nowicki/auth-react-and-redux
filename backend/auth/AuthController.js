@@ -78,9 +78,9 @@ router.get(config.facebook.callbackURL.replace('/api/auth', ''),
   function(req, res) {
     const accessToken = AuthService.issueToken(req.user._id);
     if(accessToken) {
-        console.log(`[GoogleOAuth]: Token issued for the user: ${req.user._id}`);
+        console.log(`[FacebookOAuth]: Token issued for the user: ${req.user._id}`);
     } else {
-        console.error(`[GoogleOAuth]: Token has not been issued for the user: ${req.user._id}`);
+        console.error(`[FacebookOAuth]: Token has not been issued for the user: ${req.user._id}`);
     }
     res.render(path.join(__dirname + '/authenticated.html'), {
         user: JSON.stringify({user: req.user, token: accessToken}),
