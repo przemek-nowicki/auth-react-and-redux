@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import './App.css';
 import Login from './containers/Login';
+import Register from './containers/Register';
 import Home from './containers/Home';
 import ProtectedRoute from './componnents/ProtectedRoute';
 import Api from './services/Api';
@@ -20,6 +21,10 @@ class App extends Component {
           <Route 
             path='/login'
             component={ Login }
+          />
+           <Route 
+            path='/register'
+            component={ Register }
           />
           <ProtectedRoute
             path='/home'
