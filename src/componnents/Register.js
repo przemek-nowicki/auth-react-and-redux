@@ -34,12 +34,29 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(3),
     },
     submit: {
-      margin: theme.spacing(3, 0, 2),
+      margin: theme.spacing(0, 0, 1),
     },
  }));
 
- export default function Register() {
+ export default function Register(props) {
     const classes = useStyles();
+
+    const submit =  (ev) => {
+      ev.preventDefault();
+      switch(ev.currentTarget.name) {
+        case 'email':
+          console.log('sent request to backend');
+        break;
+        case 'facebook':
+            props.loginOAuthFacebook();
+        break;
+        case 'google':
+            props.loginOAuthGoogle();
+        break;
+        default: 
+      }
+    }
+    
     return (<Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -49,7 +66,7 @@ const useStyles = makeStyles(theme => ({
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={submit} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -92,18 +109,39 @@ const useStyles = makeStyles(theme => ({
                 />
               </Grid>
             </Grid>
+            <Button 
+              type="submit" 
+              name="email"
+              fullWidth 
+              variant="outlined" 
+              color="primary"
+              onClick={submit}
+              className={classes.submit}>
+                Sign up With Email
+            </Button>
             <Button
               type="submit"
+              name="facebook"
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
-            >
-              Sign Up
+              onClick={submit}
+              className={classes.submit}>
+                Sign up With Facebook
+            </Button>
+            <Button
+              type="submit"
+              name="google"
+              fullWidth
+              variant="contained"
+              color="secondary"
+              onClick={submit}
+              className={classes.submit}>
+                Sign up With Google
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+// TODO: change to new Layout with Container component as it's done in Register
 const styles = theme => ({
     main: {
         width: 'auto',
@@ -95,10 +96,10 @@ class Login extends Component {
                             <Button type="submit" fullWidth variant="outlined" color="primary" disabled={loggingIn}>Login</Button>
                         </FormControl>
                         <FormControl fullWidth>
-                            <Button type="button" fullWidth variant="contained" color="primary" onClick={this.siggningInWithFacebook}>Signing in with Facebook</Button>
+                            <Button type="button" fullWidth variant="contained" color="primary" onClick={this.siggningInWithFacebook}>Sign in with Facebook</Button>
                         </FormControl>
                         <FormControl margin="dense" fullWidth>
-                            <Button type="button" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithGoogle}>Signing in with Google</Button>
+                            <Button type="button" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithGoogle}>Sign in with Google</Button>
                         </FormControl>
                     </form>
                 </Paper>
