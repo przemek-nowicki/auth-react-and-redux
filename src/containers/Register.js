@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 import * as auth from '../store/actions/auth.action';
-
 import Register from '../componnents/Register';
+
+import Api from '../services/Api';
+import UserService from '../services/UserService';
+import {withService} from '../serviceContext'
+
+const service = new UserService(new Api());
 
 const mapStateToProps = state => {
     return {
@@ -11,12 +16,12 @@ const mapStateToProps = state => {
     };
 };
 
+
 const mapDispatchToProps = dispatch => {
     return {
-        register: (email, password) => dispatch(auth.login(email, password)),
         loginOAuthGoogle: () => dispatch(auth.loginOAuthGoogle()),
         loginOAuthFacebook: () => dispatch(auth.loginOAuthFacebook())
     };
 };
 
-export default connect( mapStateToProps, mapDispatchToProps )( Register );
+export default connect( mapStateToProps, mapDispatchToProps )( withService(Register,service) );

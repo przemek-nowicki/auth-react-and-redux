@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -40,12 +40,23 @@ const useStyles = makeStyles(theme => ({
 
  export default function Register(props) {
     const classes = useStyles();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const submit =  (ev) => {
+    const submit =  async (ev) => {
       ev.preventDefault();
       switch(ev.currentTarget.name) {
         case 'email':
           console.log('sent request to backend');
+          console.log(name , email, password);
+          try {
+             const result = await props.service.register(name, email, password);
+             
+          } catch(e) {
+            console.error('error:',e);
+          }
+          //this.props.login(login, password);
         break;
         case 'facebook':
             props.loginOAuthFacebook();
@@ -75,6 +86,7 @@ const useStyles = makeStyles(theme => ({
                   fullWidth
                   id="name"
                   label="Name"
+                  onChange={(ev) => setName(ev.target.value)}
                   name="name"
                   autoComplete="name"
                 />
@@ -86,6 +98,7 @@ const useStyles = makeStyles(theme => ({
                   fullWidth
                   id="email"
                   label="Email Address"
+                  onChange={(ev) => setEmail(ev.target.value)}
                   name="email"
                   autoComplete="email"
                 />
@@ -97,6 +110,7 @@ const useStyles = makeStyles(theme => ({
                   fullWidth
                   name="password"
                   label="Password"
+                  onChange={(ev) => setPassword(ev.target.value)}
                   type="password"
                   id="password"
                   autoComplete="current-password"

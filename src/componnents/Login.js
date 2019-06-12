@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-// TODO: change to new Layout with Container component as it's done in Register
 const styles = theme => ({
     main: {
         width: 'auto',
@@ -43,6 +42,8 @@ const styles = theme => ({
     }
 });
 
+// TODO: change to new Layout with Container component as it's done in Register
+// TODO: change class to to function components and use state hook 
 class Login extends Component {
     state = {
         login: '',

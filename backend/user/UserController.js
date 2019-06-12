@@ -6,16 +6,20 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 const User = require('./User');
 
-router.post('/', function (req, res) {
-    User.create({
-            name : req.body.name,
-            email : req.body.email,
-            password : req.body.password
-        }, 
-        function (err, user) {
-            if (err) return res.status(500).send("There was a problem adding the information to the database.");
-            res.status(200).send(user);
-        });
+// TODO: use async await in other functions
+router.post('/register', async (req, res) => {
+    const user = new User();
+    user.name = req.body.name;
+    user.email = req.body.email;
+    user.setPassword(req.body.password);
+    user.createdAt = new Date();
+    try {
+        const createdUser = await user.save();
+        return res.status(201).json({status: 201, data: createdUser, message: 'User successfully created'});
+    } catch (e) {
+        console.error(`[error] user registration ${user.email} error = ${e}`);
+        return res.status(400).json({status: 400, message: e.message});
+    }
 });
 
 router.get('/', function (req, res) {
