@@ -9,9 +9,10 @@ passport.use(new GoogleStrategy({
     callbackURL: config.google.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    const query = { googleId : profile.id };
+    const email = profile.emails ? profile.emails[0].value : undefined;
+    const query = { $or: [ {googleId : profile.id}, {email} ]};
     const update = {
-      email: profile.emails ? profile.emails[0].value : undefined,
+      email,
       name: profile.displayName,
       photoUrl : profile.photos ? profile.photos[0].value : undefined,
       lastLogin : {

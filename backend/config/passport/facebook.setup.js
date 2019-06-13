@@ -10,9 +10,10 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'emails', 'name', 'displayName']
   },
   function(accessToken, refreshToken, profile, done) {
-    const query = { facebookId : profile.id };
+    const email = profile.emails ? profile.emails[0].value : undefined;
+    const query = {  $or: [{facebookId : profile.id}, {email}] };
     const update = {
-      email: profile.emails ? profile.emails[0].value : undefined,
+      email,
       name: profile.displayName,
       photoUrl : profile.photos ? profile.photos[0].value : undefined,
       lastLogin : {
