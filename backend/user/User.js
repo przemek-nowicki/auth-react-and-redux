@@ -7,7 +7,7 @@ const validateEmail = function(email) {
 };
 
 const UserSchema = new mongoose.Schema({  
-  name: String,
+  name: {type: String, required: [true, 'name is required'], trim: true},
   email: {type: String,
     trim: true,
     unique: true,
@@ -43,7 +43,15 @@ UserSchema.methods.toAuthJSON = function() {
     email: this.email,
     name: this.name
   };
-}
+};
+
+UserSchema.methods.toProfileJSON = function() {
+  return {
+    _id: this._id,
+    email: this.email,
+    name: this.name
+  };
+};
 
 mongoose.model('User', UserSchema);
 

@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 
-router.use(bodyParser.urlencoded({ extended: true }));
-router.use(bodyParser.json());
 const User = require('./User');
 
 // TODO: use async await in other functions
@@ -14,11 +11,14 @@ router.post('/register', async (req, res) => {
     user.setPassword(req.body.password);
     user.createdAt = new Date();
     try {
-        const createdUser = await user.save();
-        return res.status(201).json({status: 201, data: createdUser, message: 'User successfully created'});
+        await user.save();
+        return res.status(201).json({status: 201, data: user.toProfileJSON(), message: 'User successfully created'});
     } catch (e) {
         console.error(`[error] user registration ${user.email} error = ${e}`);
-        return res.status(400).json({status: 400, message: e.message});
+        if(e.errors && e.errors.email && e.errors.email.kind === 'unique') {
+            return res.status(409).json({status: 409, message: e.toString()});
+        }
+        return res.status(400).json({status: 400, message: e.toString()});
     }
 });
 

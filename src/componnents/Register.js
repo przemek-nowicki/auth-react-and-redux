@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -43,20 +42,21 @@ const useStyles = makeStyles(theme => ({
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const emailError = false;
 
     const submit =  async (ev) => {
       ev.preventDefault();
       switch(ev.currentTarget.name) {
         case 'email':
-          console.log('sent request to backend');
-          console.log(name , email, password);
           try {
-             const result = await props.service.register(name, email, password);
-             
+             await props.service.register(name, email, password);
           } catch(e) {
-            console.error('error:',e);
+            if (e.message === '409') {
+              console.log('Email already taken');
+            } else {
+              
+            }
           }
-          //this.props.login(login, password);
         break;
         case 'facebook':
             props.loginOAuthFacebook();
@@ -67,9 +67,12 @@ const useStyles = makeStyles(theme => ({
         default: 
       }
     }
+
+    const validateEmail = (value) => {
+    // TODO: valid email address
+    };
     
     return (<Container component="main" maxWidth="xs">
-        <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -81,6 +84,7 @@ const useStyles = makeStyles(theme => ({
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  error={false}
                   variant="outlined"
                   required
                   fullWidth
@@ -93,18 +97,22 @@ const useStyles = makeStyles(theme => ({
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={emailError}
                   variant="outlined"
                   required
                   fullWidth
                   id="email"
                   label="Email Address"
+                  onKeyUp={(ev) => validateEmail(ev.target.value)}
                   onChange={(ev) => setEmail(ev.target.value)}
                   name="email"
                   autoComplete="email"
+                  aria-describedby="email-error-text"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={false}
                   variant="outlined"
                   required
                   fullWidth
@@ -119,7 +127,7 @@ const useStyles = makeStyles(theme => ({
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  label="I accept terms and conditions of this"
                 />
               </Grid>
             </Grid>

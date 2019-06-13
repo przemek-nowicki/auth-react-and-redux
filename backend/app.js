@@ -15,6 +15,8 @@ const UserController = require('./user/UserController');
 const AuthController = require('./auth/AuthController');
 
 app.engine('html', mustacheExpress());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(cors());
 app.use('/api/users', UserController);

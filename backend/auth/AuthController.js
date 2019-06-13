@@ -28,7 +28,7 @@ router.post('/login', (req, res) => {
     })(req, res);
 });
 
-router.get('/me', AuthService.authRequired, function(req, res) {
+router.get('/me', AuthService.authRequired, (req, res) => {
     return res.status(200).send(req.user);
  });
 

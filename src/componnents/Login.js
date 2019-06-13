@@ -51,10 +51,10 @@ class Login extends Component {
     }
     
     submit = (ev) => {
-       ev.preventDefault();
-       const { login, password } = this.state;
-       this.props.login(login, password);
-    };
+        ev.preventDefault();
+        const { login, password } = this.state;
+        this.props.login(login, password);
+     };
 
     inputChange = (ev) => {
         const { name, value } = ev.target;
