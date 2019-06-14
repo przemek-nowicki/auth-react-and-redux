@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import * as EmailValidator from 'email-validator';
   
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -42,8 +42,8 @@ const useStyles = makeStyles(theme => ({
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const emailError = false;
-
+    const [emailError, setEmailError] = useState(false);
+    
     const submit =  async (ev) => {
       ev.preventDefault();
       switch(ev.currentTarget.name) {
@@ -68,8 +68,8 @@ const useStyles = makeStyles(theme => ({
       }
     }
 
-    const validateEmail = (value) => {
-    // TODO: valid email address
+    const validateEmail = (email) => {
+        setEmailError(!EmailValidator.validate(email));
     };
     
     return (<Container component="main" maxWidth="xs">
@@ -103,8 +103,8 @@ const useStyles = makeStyles(theme => ({
                   fullWidth
                   id="email"
                   label="Email Address"
-                  onKeyUp={(ev) => validateEmail(ev.target.value)}
                   onChange={(ev) => setEmail(ev.target.value)}
+                  onKeyUp={(ev) => validateEmail(ev.target.value)}
                   name="email"
                   autoComplete="email"
                   aria-describedby="email-error-text"
