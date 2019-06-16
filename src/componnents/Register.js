@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
@@ -10,7 +11,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import * as EmailValidator from 'email-validator';
+import validateEmail from '../validators/validate-email';
+import {validateName} from '../validators/validate-name';
+import validatePassword from '../validators/validate-password';
   
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -42,19 +45,27 @@ const useStyles = makeStyles(theme => ({
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [emailError, setEmailError] = useState(false);
+    const [nameError, setNameError] = useState(null);
+    const [emailError, setEmailError] = useState(null);
+    const [passwordError, setPasswordError] = useState(null);
+    let emailErrorMessage;
     
     const submit =  async (ev) => {
       ev.preventDefault();
       switch(ev.currentTarget.name) {
         case 'email':
+          validateNamField(name);
+          validateEmailField(email);
+          validatePasswordField(password);
+          if(!name || !email || !password) return; 
           try {
-             await props.service.register(name, email, password);
+            await props.service.register(name, email, password);
           } catch(e) {
             if (e.message === '409') {
-              console.log('Email already taken');
+              setEmailError('Email address already taken');
             } else {
-              
+              console.log(e.body.message);
+              setEmailError('Email address is incorrect');
             }
           }
         break;
@@ -68,10 +79,20 @@ const useStyles = makeStyles(theme => ({
       }
     }
 
-    const validateEmail = (email) => {
-        setEmailError(!EmailValidator.validate(email));
+    const validateNamField = (name) => {
+      setNameError(validateName(name) ? null : '');
+    }
+
+    const validateEmailField = (email) => {
+      setEmailError(validateEmail(email) ? null : '');
     };
+
+    const validatePasswordField = (password) => {
+      setPasswordError(validatePassword(password ? null : ''));
+    }
     
+    if(emailError) emailErrorMessage = <FormHelperText error={true} id="email-error-text">{emailError}</FormHelperText>;
+
     return (<Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -84,41 +105,44 @@ const useStyles = makeStyles(theme => ({
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  error={false}
+                  error={nameError !== null}
                   variant="outlined"
                   required
                   fullWidth
                   id="name"
                   label="Name"
                   onChange={(ev) => setName(ev.target.value)}
+                  onKeyUp={(ev) => validateNamField(ev.target.value)}
                   name="name"
                   autoComplete="name"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  error={emailError}
+                  error={emailError !== null}
                   variant="outlined"
                   required
                   fullWidth
                   id="email"
                   label="Email Address"
                   onChange={(ev) => setEmail(ev.target.value)}
-                  onKeyUp={(ev) => validateEmail(ev.target.value)}
+                  onKeyUp={(ev) => validateEmailField(ev.target.value)}
                   name="email"
                   autoComplete="email"
                   aria-describedby="email-error-text"
                 />
+                {emailErrorMessage}
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  error={false}
+                  error={passwordError !== null}
                   variant="outlined"
                   required
                   fullWidth
                   name="password"
                   label="Password"
                   onChange={(ev) => setPassword(ev.target.value)}
+                  onKeyUp={(ev) => validatePasswordField(ev.target.value)}
                   type="password"
                   id="password"
                   autoComplete="current-password"
