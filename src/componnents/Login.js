@@ -6,6 +6,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -102,6 +103,9 @@ class Login extends Component {
                         <FormControl margin="dense" fullWidth>
                             <Button type="button" fullWidth variant="contained" color="secondary" onClick={this.siggningInWithGoogle}>Sign in with Google</Button>
                         </FormControl>
+                        <Link href="/register" variant="body2">
+                            Don't have an account? Sign Up
+                        </Link>
                     </form>
                 </Paper>
             </main>
