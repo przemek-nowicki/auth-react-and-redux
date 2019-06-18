@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -11,9 +12,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
 import validateEmail from '../validators/validate-email';
-import {validateName} from '../validators/validate-name';
+import validateName from '../validators/validate-name';
 import validatePassword from '../validators/validate-password';
+import history from '../helpers/history';
   
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -48,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     const [nameError, setNameError] = useState(null);
     const [emailError, setEmailError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
-    let emailErrorMessage;
+    let emailErrorMessage, nameErrorMessage, passwordErrorMessage;
     
     const submit =  async (ev) => {
       ev.preventDefault();
@@ -60,9 +63,10 @@ const useStyles = makeStyles(theme => ({
           if(!name || !email || !password) return; 
           try {
             await props.service.register(name, email, password);
+            history.push('/login');
           } catch(e) {
             if (e.message === '409') {
-              setEmailError('Email address already taken');
+              setEmailError('Email address is already taken');
             } else {
               console.log(e.body.message);
               setEmailError('Email address is incorrect');
@@ -80,18 +84,20 @@ const useStyles = makeStyles(theme => ({
     }
 
     const validateNamField = (name) => {
-      setNameError(validateName(name) ? null : '');
+      setNameError(validateName(name));
     }
 
     const validateEmailField = (email) => {
-      setEmailError(validateEmail(email) ? null : '');
+      setEmailError(validateEmail(email));
     };
 
     const validatePasswordField = (password) => {
-      setPasswordError(validatePassword(password ? null : ''));
+      setPasswordError(validatePassword(password));
     }
     
+    if(nameError) nameErrorMessage = <FormHelperText error={true} id="name-error-text">{nameError}</FormHelperText>;
     if(emailError) emailErrorMessage = <FormHelperText error={true} id="email-error-text">{emailError}</FormHelperText>;
+    if(passwordError) passwordErrorMessage = <FormHelperText error={true} id="password-error-text">{passwordError}</FormHelperText>;;
 
     return (<Container component="main" maxWidth="xs">
         <div className={classes.paper}>
@@ -115,7 +121,9 @@ const useStyles = makeStyles(theme => ({
                   onKeyUp={(ev) => validateNamField(ev.target.value)}
                   name="name"
                   autoComplete="name"
+                  aria-describedby="name-error-text"
                 />
+                {nameErrorMessage}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -146,12 +154,14 @@ const useStyles = makeStyles(theme => ({
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  aria-describedby="password-error-text"
                 />
+                {passwordErrorMessage}
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I accept terms and conditions of this"
+                  label="I accept terms and conditions of this website"
                 />
               </Grid>
             </Grid>
