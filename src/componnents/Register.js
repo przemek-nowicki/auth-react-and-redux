@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,6 +17,7 @@ import Container from '@material-ui/core/Container';
 import validateEmail from '../validators/validate-email';
 import validateName from '../validators/validate-name';
 import validatePassword from '../validators/validate-password';
+import UserService from '../services/UserService';
 import history from '../helpers/history';
   
 const useStyles = makeStyles(theme => ({
@@ -43,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     },
  }));
 
- export default function Register(props) {
+const RegisterComponent = (props) => {
     const classes = useStyles();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -55,31 +57,20 @@ const useStyles = makeStyles(theme => ({
     
     const submit =  async (ev) => {
       ev.preventDefault();
-      switch(ev.currentTarget.name) {
-        case 'email':
-          validateNamField(name);
-          validateEmailField(email);
-          validatePasswordField(password);
-          if(!name || !email || !password) return; 
-          try {
-            await props.service.register(name, email, password);
-            history.push('/login');
-          } catch(e) {
-            if (e.message === '409') {
-              setEmailError('Email address is already taken');
-            } else {
-              console.log(e.body.message);
-              setEmailError('Email address is incorrect');
-            }
-          }
-        break;
-        case 'facebook':
-            props.loginOAuthFacebook();
-        break;
-        case 'google':
-            props.loginOAuthGoogle();
-        break;
-        default: 
+      validateNamField(name);
+      validateEmailField(email);
+      validatePasswordField(password);
+      if(!name || !email || !password) return; 
+      try {
+        await props.service.register(name, email, password);
+        history.push('/login');
+      } catch(e) {
+        if (e.message === '409') {
+          setEmailError('Email address is already taken');
+        } else {
+          console.log(e.body.message);
+          setEmailError('Email address is incorrect');
+        }
       }
     }
 
@@ -119,6 +110,7 @@ const useStyles = makeStyles(theme => ({
                   label="Name"
                   onChange={(ev) => setName(ev.target.value)}
                   onKeyUp={(ev) => validateNamField(ev.target.value)}
+                  onBlur={(ev) => validateNamField(ev.target.value)}
                   name="name"
                   autoComplete="name"
                   aria-describedby="name-error-text"
@@ -135,6 +127,7 @@ const useStyles = makeStyles(theme => ({
                   label="Email Address"
                   onChange={(ev) => setEmail(ev.target.value)}
                   onKeyUp={(ev) => validateEmailField(ev.target.value)}
+                  onBlur={(ev) => validateEmailField(ev.target.value)}
                   name="email"
                   autoComplete="email"
                   aria-describedby="email-error-text"
@@ -151,6 +144,7 @@ const useStyles = makeStyles(theme => ({
                   label="Password"
                   onChange={(ev) => setPassword(ev.target.value)}
                   onKeyUp={(ev) => validatePasswordField(ev.target.value)}
+                  onBlur={(ev) => validatePasswordField(ev.target.value)}
                   type="password"
                   id="password"
                   autoComplete="current-password"
@@ -176,22 +170,22 @@ const useStyles = makeStyles(theme => ({
                 Sign up With Email
             </Button>
             <Button
-              type="submit"
+              type="button"
               name="facebook"
               fullWidth
               variant="contained"
               color="primary"
-              onClick={submit}
+              onClick={(ev) => props.loginOAuthFacebook()}
               className={classes.submit}>
                 Sign up With Facebook
             </Button>
             <Button
-              type="submit"
+              type="button"
               name="google"
               fullWidth
               variant="contained"
               color="secondary"
-              onClick={submit}
+              onClick={(ev) => props.loginOAuthGoogle()}
               className={classes.submit}>
                 Sign up With Google
             </Button>
@@ -206,3 +200,11 @@ const useStyles = makeStyles(theme => ({
         </div>
       </Container>);
 }
+
+RegisterComponent.propTypes = {
+  loginOAuthGoogle: PropTypes.func.isRequired,
+  loginOAuthFacebook: PropTypes.func.isRequired,
+  service: PropTypes.instanceOf(UserService).isRequired
+};
+
+export default RegisterComponent;
