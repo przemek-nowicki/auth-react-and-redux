@@ -40,6 +40,9 @@ const useStyles = makeStyles(theme => ({
       width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(3),
     },
+    error: {
+      color: '#f44336',
+    },
     submit: {
       margin: theme.spacing(0, 0, 1),
     },
@@ -53,6 +56,7 @@ const RegisterComponent = (props) => {
     const [nameError, setNameError] = useState(null);
     const [emailError, setEmailError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
+    const [terms, setTerms] = useState(true);
     let emailErrorMessage, nameErrorMessage, passwordErrorMessage;
     
     const submit =  async (ev) => {
@@ -60,7 +64,7 @@ const RegisterComponent = (props) => {
       validateNamField(name);
       validateEmailField(email);
       validatePasswordField(password);
-      if(!name || !email || !password) return; 
+      if(!name || !email || !password || !terms) return; 
       try {
         await props.service.register(name, email, password);
         history.push('/login');
@@ -85,7 +89,11 @@ const RegisterComponent = (props) => {
     const validatePasswordField = (password) => {
       setPasswordError(validatePassword(password));
     }
-    
+
+    const handleTermsChange = (checked) => {
+      setTerms(checked);
+    }
+
     if(nameError) nameErrorMessage = <FormHelperText error={true} id="name-error-text">{nameError}</FormHelperText>;
     if(emailError) emailErrorMessage = <FormHelperText error={true} id="email-error-text">{emailError}</FormHelperText>;
     if(passwordError) passwordErrorMessage = <FormHelperText error={true} id="password-error-text">{passwordError}</FormHelperText>;;
@@ -154,8 +162,9 @@ const RegisterComponent = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={<Checkbox className={terms ? null : classes.error} checked={terms} onChange={(ev) => handleTermsChange(ev.target.checked)} color="primary" />}
                   label="I accept terms and conditions of this website"
+                  className={terms ? null : classes.error}
                 />
               </Grid>
             </Grid>
