@@ -163,7 +163,7 @@ const RegisterComponent = (props) => {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox className={terms ? null : classes.error} checked={terms} onChange={(ev) => handleTermsChange(ev.target.checked)} color="primary" />}
-                  label="I accept terms and conditions of this website"
+                  label="I read and accept terms and conditions"
                   className={terms ? null : classes.error}
                 />
               </Grid>
