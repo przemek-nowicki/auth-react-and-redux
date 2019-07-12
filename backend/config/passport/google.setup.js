@@ -11,15 +11,34 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, done) {
     const email = profile.emails ? profile.emails[0].value : undefined;
     const query = { $or: [ {googleId : profile.id}, {email} ]};
-    const update = {
-      email,
-      name: profile.displayName,
+    const fieldsToupdate = {
       photoUrl : profile.photos ? profile.photos[0].value : undefined,
-      lastLogin : {
-        timestamp : new Date()
-      }  
+      googleId: profile.id,
+      lastLogin : new Date()
     }
-    const options = { upsert : true, new : true };
-    User.findOneAndUpdate(query, update, options, (err, user) => err ? done(err) : done(null, user.toAuthJSON()));
+    User.update(
+      query,
+      {
+        $set: fieldsToupdate,
+        $setOnInsert: {
+          email,
+          displayName: profile.displayName,
+          createdAt: new Date()
+        },
+      },
+      {upsert: true, omitUndefined: true},
+      (err, res) => { 
+        if(err) {
+          done(err);
+        }
+        console.info(`[GoogleOAuth]: User with ${fieldsToupdate.googleId} googleId connected`);
+        User.findOne({googleId: fieldsToupdate.googleId}, (err, user) => {
+          if(err) {
+            done(err);
+          }
+          done(null, user.toAuthJSON());
+        });
+      }
+   );
   }
 ));

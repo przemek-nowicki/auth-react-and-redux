@@ -17,9 +17,7 @@ const UserSchema = new mongoose.Schema({
   hash: String,
   salt: String,
   photoUrl: String,
-  lastLogin: {
-    timestamp : { type : Date, default : undefined }
-  },
+  lastLogin: { type : Date, default : undefined },
   createdAt:  { type : Date, default : undefined },
   googleId: String,
   facebookId: String
