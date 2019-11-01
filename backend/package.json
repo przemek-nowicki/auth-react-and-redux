@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.5.15",
+    "mongoose": "^5.7.5",
     "mongoose-unique-validator": "^2.0.3",
     "mustache-express": "^1.2.8",
     "nodemon": "^1.19.1",
